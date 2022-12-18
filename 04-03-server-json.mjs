@@ -1,15 +1,16 @@
 import { createServer } from "node:http";
+import json from './04-03-json-exemple.json' assert {type: 'json'};
 
 const server = createServer((request, response) => {
   console.log("request received");
 
   response.statusCode = 200;
 
-  response.setHeader("Content-Type", "text/html");
+  response.setHeader("Content-Type", "application/json");
 
-  response.end(
-    "<html><body><h1>Hello Node.js! by Filippo</h1></body></html>"
-  );
+  const jsonResponseBody = JSON.stringify(json);
+
+  response.end(jsonResponseBody);
 });
 
 server.listen(3000, () => {
