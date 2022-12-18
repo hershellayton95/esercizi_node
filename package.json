@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/hershellayton95/esercizi_node/issues"
   },
-  "homepage": "https://github.com/hershellayton95/esercizi_node#readme"
+  "homepage": "https://github.com/hershellayton95/esercizi_node#readme",
+  "dependencies": {
+    "figlet": "^1.5.2"
+  }
 }
