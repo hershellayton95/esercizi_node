@@ -7,10 +7,13 @@ import { PrismaClient } from "@prisma/client";
 import validatorResultMiddleware from "./lib/middleware/validator"
 import schema from "./lib/schema/schema";
 import { param } from "express-validator";
+import multer from "multer";
 
 const prisma = new PrismaClient();
 
 const app = express();
+
+const upload = multer({ dest: 'uploads/' })
 
 app.use(express.json())
 
@@ -92,4 +95,14 @@ app.delete("/delete/users/:id",
 
         res.json({ msg: "utente eliminato" });
     });
+
+
+
+app.post("/file",
+    upload.single("file"),
+    (req: express.Request, res: express.Response) => {
+        console.log(req.file);
+        res.json(req.file)
+    })
+
 export default app;
