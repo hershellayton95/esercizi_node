@@ -1,5 +1,6 @@
 import express from "express";
 import "express-async-errors";
+import cors from "cors"
 
 import { PrismaClient } from "@prisma/client";
 
@@ -12,6 +13,10 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.use(express.json())
+
+app.use(cors({
+    origin: "http://localhost:8080"
+}))
 
 //READ
 app.get("/users", async (req: express.Request, res: express.Response) => {
