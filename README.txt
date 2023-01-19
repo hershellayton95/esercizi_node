@@ -1,9 +1,5 @@
-Create your own HTTP server
+Retrieve all resources
 
-Use the techniques you've learnt so far to create your own HTTP server with Express. Your server should:
+In this exercise you'll build on what you created in 'Unit 12, Exercise 1: Create a database and Prisma model'.
 
-    Automatically recompile and restart when you make changes
-    Have a GET route that sends a JSON response
-    Have an integration test for the GET route
-    Use an environment variable to configure the server port
-
+Add a route to your API that retrieves all resources.
