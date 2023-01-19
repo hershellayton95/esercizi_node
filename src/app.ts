@@ -103,6 +103,6 @@ app.post("/file",
     (req: express.Request, res: express.Response) => {
         console.log(req.file);
         res.json(req.file)
-    })
+    });
 
 export default app;
