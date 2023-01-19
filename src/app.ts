@@ -45,7 +45,6 @@ app.get("/find/users/:id",
 
         const idUser = req.params.id;
 
-        console.log(idUser);
 
         const users = await prisma.person.findUnique({
             where: { id: idUser }
@@ -54,4 +53,38 @@ app.get("/find/users/:id",
         res.json(users);
     });
 
+//UPDATE A RESOURCE
+app.patch("/update/users/:id",
+    param("id").toInt().isInt({ min: 1 }),
+    schema,
+    validatorResultMiddleware,
+    async (req: express.Request, res: express.Response) => {
+
+        const idUser = req.params.id;
+        const dataUser = req.body;
+
+        const users = await prisma.person.update({
+            where: { id: idUser },
+            data: dataUser
+        });
+
+        res.json(users);
+    });
+
+
+//delete
+
+app.delete("/delete/users/:id",
+    param("id").toInt().isInt({ min: 1 }),
+    validatorResultMiddleware,
+    async (req: express.Request, res: express.Response) => {
+
+        const idUser = req.params.id;
+
+        await prisma.person.delete({
+            where: { id: idUser }
+        });
+
+        res.json({ msg: "utente eliminato" });
+    });
 export default app;

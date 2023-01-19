@@ -1,6 +1,10 @@
 import { body } from "express-validator";
 
 const schema = [
+    body("id")
+        .not()
+        .exists()
+        .withMessage('non puoi inserire un id'),
     body("name")
         .notEmpty()
         .withMessage('name mancante')
