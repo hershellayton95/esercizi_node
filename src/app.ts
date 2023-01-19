@@ -43,7 +43,7 @@ app.get("/find/users/:id",
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
 
-        const idUser = req.params.id;
+        const idUser = Number(req.params.id);
 
 
         const users = await prisma.person.findUnique({
@@ -60,7 +60,7 @@ app.patch("/update/users/:id",
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
 
-        const idUser = req.params.id;
+        const idUser = Number(req.params.id);
         const dataUser = req.body;
 
         const users = await prisma.person.update({
@@ -79,7 +79,7 @@ app.delete("/delete/users/:id",
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
 
-        const idUser = req.params.id;
+        const idUser = Number(req.params.id);
 
         await prisma.person.delete({
             where: { id: idUser }
