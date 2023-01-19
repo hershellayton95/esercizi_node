@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 import validatorResultMiddleware from "./lib/middleware/validator"
 import schema from "./lib/schema/schema";
+import { param } from "express-validator";
 
 const prisma = new PrismaClient();
 
@@ -20,7 +21,6 @@ app.get("/users", async (req: express.Request, res: express.Response) => {
     res.json(users);
 });
 
-
 //CREATE
 app.put("/create/users",
     schema,
@@ -33,6 +33,25 @@ app.put("/create/users",
         });
 
         res.status(201).json(users);
+    });
+
+
+//RETRIEVE A RESOURCE
+
+app.get("/find/users/:id",
+    param("id").toInt().isInt({ min: 1 }),
+    validatorResultMiddleware,
+    async (req: express.Request, res: express.Response) => {
+
+        const idUser = req.params.id;
+
+        console.log(idUser);
+
+        const users = await prisma.person.findUnique({
+            where: { id: idUser }
+        });
+
+        res.json(users);
     });
 
 export default app;
