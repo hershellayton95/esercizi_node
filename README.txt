@@ -1,5 +1,5 @@
-In this exercise you'll build on what you created in 'Exercise: Refactor your application'.
+Apply the singleton pattern
 
-Implement authentication for your API. You should:
+Create a module containing a class, with a method named output that logs any value that's passed to it.
 
-Integrate Passport, the GitHub2 Passport strategy and the Express session middleware. Create a GitHub OAuth App and configure your application to use it. Add routes for handling the login and logout process. Protect the POST, PUT and DELETE routes on your API. Set a username on resources when they're created or updated. Create a web page for adding a resource, so that you can test the authentication.
+Apply the singleton pattern to export a single instance of the class from the module.
