@@ -1,62 +1,28 @@
-Fix the Adapter
+Shout with a decorator
 
-The Logger class expects any logStorage object it receives to implement a write and a read method.
+Implement a toString method on the Shout class that decorates the toString method for a Text class instance.
 
-Fix the LogStorageFSAdapter class so that it provides the methods the Logger class expects.
+It should use the toUpperCase() method to convert the Text instance string to uppercase.
 
-const fs = require("node:fs/promises");
-
-class Logger {
-  constructor(logStorage) {
-    this.logStorage = logStorage;
+class Text {
+  constructor(text) {
+    this.string = text;
   }
 
-  async info(message) {
-    await this.logStorage.write(`[INFO] ${message}\n`);
-  }
-
-  async error(message) {
-    await this.logStorage.write(`[ERROR] ${message}\n`);
-  }
-
-  async replay() {
-    console.log(await this.logStorage.read());
+  toString() {
+    return this.string;
   }
 }
 
-class LogStorageFSAdapter {
-  constructor(filepath) {
-    this.filepath = filepath;
-  }
-
-  async appendFile(message) {
-    try {
-      await fs.appendFile(this.filepath, `[INFO] ${message}\n`);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async readFile() {
-    try {
-      return await fs.readFile(this.filepath, { encoding: "utf-8" });
-    } catch (error) {
-      console.error(error);
-    }
+class Shout {
+  constructor(text) {
+    this.text = text;
   }
 }
 
-const fsStorage = new LogStorageFSAdapter("output.log");
+console.log(new Text("Hello, I'm talking").toString());
 
-const logger = new Logger(fsStorage);
+console.log(new Shout(new Text("Hello, I'm shouting!")).toString());
 
-logger.info("Some information");
 
-logger.error("A bit of an issue");
-
-logger.error("A catastrophic error!");
-
-logger.info("The best information");
-
-logger.replay();
 
