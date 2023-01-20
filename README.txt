@@ -1,3 +1,10 @@
-Add support for CORS to your API
+Refactor your application
 
-Configure your API to enable CORS for requests from the origin http://localhost:8080.
+In this exercise you'll build on what you created in 'Exercise: Handle file uploads'.
+
+Refactor your API application so that:
+
+    Application configuration is accessed via one module (config.ts).
+    The routes are in their own module and imported into app.ts.
+    All middleware are organised under a middleware directory, and imported where they're needed.
+
