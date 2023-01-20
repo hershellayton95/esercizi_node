@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<body>
+    <p>
+        <a href="http://localhost:3000/auth/login?redirectTo=http://localhost:8080/add">Login</a>
+    </p>
+
+    <form action="http://localhost:3000/create/users/" id="form-add">
+        <label>
+            <strong>name:</strong>
+            <input type="text" name="name">
+        </label>
+
+        <label>
+            <strong>lastname:</strong>
+            <input type="text" name="lastname">
+        </label>
+
+        <label>
+            <strong> email:</strong>
+            <input type="text" name="email">
+        </label>
+
+        <label>
+            <strong> password:</strong>
+            <input type="text" name="password">
+        </label>
+
+        <input type="submit" value="Add user">
+    </form>
+
+    <script>
+        async function addPlanet(event) {
+            event.preventDefault();
+
+            const form = event.currentTarget;
+
+            const formData = new FormData(form);
+            const plainFormData = Object.fromEntries(formData.entries());
+            const formDataJsonString = JSON.stringify(plainFormData);
+
+            const url = form.action;
+
+            const response = await fetch(url, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: formDataJsonString,
+                credentials: "include",
+            });
+
+            const planet = await response.json();
+
+            console.dir(planet);
+        }
+
+        const addForm = document.getElementById("form-add");
+
+        addForm.addEventListener("submit", addPlanet);
+    </script>
+</body>
+
+</html>

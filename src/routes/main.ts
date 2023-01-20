@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import express, { Router } from "express";
 import { param } from "express-validator";
 import multer from "multer";
+import { checkAuthorization } from "../lib/middleware/passport";
 import validatorResultMiddleware from "../lib/middleware/validator";
 import schema from "../lib/schema/schema";
 
@@ -20,16 +21,23 @@ router.get("/users", async (req: express.Request, res: express.Response) => {
 
 //CREATE
 router.put("/create/users",
+    checkAuthorization,
     schema,
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
-        const newUser = req.body;
+        const userData = req.body;
+        const username = req.user?.username as string;
 
-        const users = await prisma.person.create({
-            data: newUser
+        const user = await prisma.person.create({
+            data: {
+                ...userData,
+                //@ts-ignore
+                createdBy: username,
+                updatedBy: username,
+            }
         });
 
-        res.status(201).json(users);
+        res.status(201).json(user);
     });
 
 
@@ -52,6 +60,7 @@ router.get("/find/users/:id",
 
 //UPDATE A RESOURCE
 router.patch("/update/users/:id",
+    checkAuthorization,
     param("id").toInt().isInt({ min: 1 }),
     schema,
     validatorResultMiddleware,
@@ -72,6 +81,7 @@ router.patch("/update/users/:id",
 //delete
 
 router.delete("/delete/users/:id",
+    checkAuthorization,
     param("id").toInt().isInt({ min: 1 }),
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
