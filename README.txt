@@ -1,28 +1,30 @@
-Shout with a decorator
+Inject the bike dependencies
 
-Implement a toString method on the Shout class that decorates the toString method for a Text class instance.
+Complete this code to inject the Wheel instance dependencies into the Bike instance.
 
-It should use the toUpperCase() method to convert the Text instance string to uppercase.
+class Bike {
+  constructor() {}
 
-class Text {
-  constructor(text) {
-    this.string = text;
-  }
+  specification() {
+    let message = `${this.wheel1.label} wheel diameter = ${this.wheel1.diameter}`;
+    message += `, ${this.wheel2.label} wheel diameter = ${this.wheel2.diameter}`;
 
-  toString() {
-    return this.string;
-  }
-}
-
-class Shout {
-  constructor(text) {
-    this.text = text;
+    return message;
   }
 }
 
-console.log(new Text("Hello, I'm talking").toString());
+class Wheel {
+  constructor(label, diameter) {
+    this.label = label;
+    this.diameter = diameter;
+  }
+}
 
-console.log(new Shout(new Text("Hello, I'm shouting!")).toString());
+const frontWheel = new Wheel("Front", 126);
+const backWheel = new Wheel("Back", 42);
 
+const bike = new Bike();
 
+console.log(bike);
 
+console.log("Bike specification:", bike.specification());
