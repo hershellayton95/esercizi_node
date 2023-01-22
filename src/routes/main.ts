@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import express, { Router } from "express";
 import { param } from "express-validator";
 import multer from "multer";
+import { checkAuthorization } from "../lib/middleware/passport";
 import validatorResultMiddleware from "../lib/middleware/validator";
 import schema from "../lib/schema/schema";
 
@@ -11,7 +12,7 @@ const prisma = new PrismaClient();
 const upload = multer({ dest: 'uploads/' })
 
 //READ
-router.get("/users", async (req: express.Request, res: express.Response) => {
+router.get("/users", checkAuthorization, async (req: express.Request, res: express.Response) => {
 
     const users = await prisma.person.findMany();
 
@@ -20,13 +21,18 @@ router.get("/users", async (req: express.Request, res: express.Response) => {
 
 //CREATE
 router.put("/create/users",
+    checkAuthorization,
     schema,
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
         const newUser = req.body;
+        const username = req.user?.username as string;
 
         const users = await prisma.person.create({
-            data: newUser
+            data: {
+                ...newUser,
+                createBy: username
+            }
         });
 
         res.status(201).json(users);
@@ -36,6 +42,7 @@ router.put("/create/users",
 //RETRIEVE A RESOURCE
 
 router.get("/find/users/:id",
+    checkAuthorization,
     param("id").toInt().isInt({ min: 1 }),
     validatorResultMiddleware,
     async (req: express.Request, res: express.Response) => {
@@ -52,6 +59,7 @@ router.get("/find/users/:id",
 
 //UPDATE A RESOURCE
 router.patch("/update/users/:id",
+    checkAuthorization,
     param("id").toInt().isInt({ min: 1 }),
     schema,
     validatorResultMiddleware,
@@ -59,10 +67,14 @@ router.patch("/update/users/:id",
 
         const idUser = Number(req.params.id);
         const dataUser = req.body;
+        const username = req.user?.username as string;
 
         const users = await prisma.person.update({
             where: { id: idUser },
-            data: dataUser
+            data: {
+                ...dataUser,
+                createBy: username
+            }
         });
 
         res.json(users);
